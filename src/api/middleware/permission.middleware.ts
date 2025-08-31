@@ -1,0 +1,2 @@
+// Permission middleware will be implemented in task 4
+export {};

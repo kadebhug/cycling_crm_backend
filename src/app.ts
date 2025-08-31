@@ -5,6 +5,7 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { logger } from './utils/logger';
+import { API_CONFIG } from './constants';
 
 // Load environment variables
 dotenv.config();
@@ -21,8 +22,8 @@ app.use(cors({
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'), // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100'), // limit each IP to 100 requests per windowMs
+  windowMs: API_CONFIG.RATE_LIMIT.WINDOW_MS,
+  max: API_CONFIG.RATE_LIMIT.MAX_REQUESTS,
   message: 'Too many requests from this IP, please try again later.',
 });
 app.use(limiter);

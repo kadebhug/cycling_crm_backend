@@ -1,4 +1,5 @@
-// Type definitions will be implemented in future tasks
-export * from './auth.types';
-export * from './api.types';
-export * from './database.types';
+// Main types index - exports all types from organized subdirectories
+export * from './common';
+export * from './api';
+export * from './database';
+export * from './auth';

@@ -6,27 +6,47 @@
   - Set up basic project structure with organized directories
   - _Requirements: 11.4_
 
-- [ ] 2. Configure database and ORM setup
+- [x] 2. Configure database and ORM setup
+
+
+
+
+
   - Set up Sequelize configuration with PostgreSQL connection
   - Create database connection utilities and environment configuration
   - Implement database initialization and migration setup
   - _Requirements: 10.1, 11.4_
 
-- [ ] 3. Implement core Sequelize models and associations
+- [x] 3. Implement core Sequelize models and associations
+
+
+
+
+
   - Create User, Store, and StaffStorePermission models with proper validations
   - Define model associations and foreign key relationships
   - Implement Bike, Service, ServiceRequest, and ServiceRecord models
   - Create Quotation, Invoice, ServiceUpdate, and Media models
   - _Requirements: 1.1, 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, 8.1, 9.1_
 
-- [ ] 4. Build authentication and authorization system
+- [x] 4. Build authentication and authorization system
+
+
+
+
+
   - Implement JWT token generation and validation utilities
   - Create authentication middleware for token verification
   - Build role-based permission middleware with store-level access control
   - Implement password hashing and user credential validation
   - _Requirements: 1.1, 1.2, 1.3, 10.5_
 
-- [ ] 5. Create base repository pattern and user repository
+- [x] 5. Create base repository pattern and user repository
+
+
+
+
+
   - Implement generic base repository with CRUD operations
   - Create user repository with authentication-specific methods
   - Add store repository with owner and staff management methods

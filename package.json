@@ -15,7 +15,13 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "migrate": "sequelize-cli db:migrate",
     "migrate:undo": "sequelize-cli db:migrate:undo",
-    "seed": "sequelize-cli db:seed:all"
+    "migrate:status": "sequelize-cli db:migrate:status",
+    "migrate:create": "sequelize-cli migration:generate --name",
+    "seed": "sequelize-cli db:seed:all",
+    "seed:undo": "sequelize-cli db:seed:undo:all",
+    "db:create": "sequelize-cli db:create",
+    "db:drop": "sequelize-cli db:drop",
+    "db:setup": "ts-node src/scripts/setup-database.ts"
   },
   "keywords": ["cycling", "crm", "api", "maintenance", "typescript"],
   "author": "",
