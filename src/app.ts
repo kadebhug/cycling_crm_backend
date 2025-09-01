@@ -4,8 +4,11 @@ import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
 import { logger } from './utils/logger';
 import { API_CONFIG } from './constants';
+import { swaggerSpec } from './config/swagger.config';
+import { authRoutes } from './routes/auth.routes';
 
 // Load environment variables
 dotenv.config();
@@ -33,7 +36,21 @@ app.use(compression());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Health check endpoint
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     tags: [Health]
+ *     summary: Health check
+ *     description: Check if the API is running and healthy
+ *     responses:
+ *       200:
+ *         description: API is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/HealthResponse'
+ */
 app.get('/health', (_req, res) => {
   res.status(200).json({
     success: true,
@@ -43,7 +60,30 @@ app.get('/health', (_req, res) => {
   });
 });
 
-// API routes will be added here in future tasks
+// Swagger documentation
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Cycling CRM API Documentation',
+}));
+
+// API routes
+app.use('/api/auth', authRoutes);
+
+/**
+ * @swagger
+ * /api:
+ *   get:
+ *     tags: [Health]
+ *     summary: API information
+ *     description: Get basic API information and documentation link
+ *     responses:
+ *       200:
+ *         description: API information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ApiInfoResponse'
+ */
 app.get('/api', (_req, res) => {
   res.status(200).json({
     success: true,

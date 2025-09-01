@@ -64,6 +64,11 @@ const validateEnvironment = (): void => {
     throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
   }
 
+  // Validate DB_PASSWORD is not empty or placeholder
+  if (!process.env.DB_PASSWORD || process.env.DB_PASSWORD === 'your_password') {
+    throw new Error('DB_PASSWORD must be set to your actual PostgreSQL password');
+  }
+
   if (process.env.JWT_SECRET && process.env.JWT_SECRET.length < 32) {
     throw new Error('JWT_SECRET must be at least 32 characters long');
   }
@@ -92,7 +97,7 @@ export const config: AppConfig = {
     port: parseInt(process.env.DB_PORT || '5432', 10),
     database: process.env.DB_NAME || 'cycling_crm',
     username: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || '',
+    password: process.env.DB_PASSWORD || 'postgres',
     dialect: 'postgres',
     logging: process.env.NODE_ENV === 'development',
     pool: {

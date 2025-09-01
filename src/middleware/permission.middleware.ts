@@ -296,7 +296,7 @@ export class PermissionMiddleware {
             required: false,
           }],
         });
-        return userRecord?.ownedStores && userRecord.ownedStores.length > 0;
+        return Boolean(userRecord?.ownedStores && userRecord.ownedStores.length > 0);
       }
 
       if (userRole === UserRole.STAFF) {
