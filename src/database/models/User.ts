@@ -166,11 +166,11 @@ export class User extends Model<
           defaultValue: false,
         },
         emailVerificationToken: {
-          type: DataTypes.STRING,
+          type: DataTypes.TEXT,
           allowNull: true,
         },
         passwordResetToken: {
-          type: DataTypes.STRING,
+          type: DataTypes.TEXT,
           allowNull: true,
         },
         passwordResetExpires: {

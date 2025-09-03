@@ -1,6 +1,9 @@
 // Test setup file for Jest
 // This file runs before each test file
 
+import { Express } from 'express';
+import { app } from '../app';
+
 // Set test environment variables
 process.env.NODE_ENV = 'test';
 process.env.DB_NAME = 'cycling_crm_test';
@@ -19,3 +22,8 @@ afterAll(() => {
   console.error = originalConsoleError;
   console.warn = originalConsoleWarn;
 });
+
+// Create test app function
+export async function createTestApp(): Promise<Express> {
+  return app;
+}

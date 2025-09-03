@@ -53,7 +53,12 @@
   - Write unit tests for repository pattern implementation
   - _Requirements: 2.1, 3.1, 10.1_
 
-- [ ] 6. Implement authentication service and controllers
+- [x] 6. Implement authentication service and controllers
+
+
+
+
+
   - Create authentication service with login, register, and token refresh
   - Build authentication controller with login/logout endpoints
   - Implement user registration with email validation requirements
@@ -61,7 +66,12 @@
   - Write integration tests for authentication endpoints
   - _Requirements: 1.1, 1.2, 1.4, 1.5_
 
-- [ ] 7. Build admin management functionality
+- [x] 7. Build admin management functionality
+
+
+
+
+
   - Create admin service for store owner management operations
   - Implement admin controller with CRUD endpoints for store owners
   - Add store creation logic when creating store owners
@@ -69,7 +79,12 @@
   - Write tests for admin functionality and access control
   - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-- [ ] 8. Implement store owner staff management
+- [x] 8. Implement store owner staff management
+
+
+
+
+
   - Create staff management service with permission handling
   - Build store owner controller endpoints for staff operations
   - Implement staff invitation and permission assignment logic
