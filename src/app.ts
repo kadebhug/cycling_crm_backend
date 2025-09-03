@@ -10,6 +10,7 @@ import { API_CONFIG } from './constants';
 import { swaggerSpec } from './config/swagger.config';
 import { authRoutes } from './routes/auth.routes';
 import { adminRoutes } from './routes/admin.routes';
+import storeRoutes from './api/routes/store.routes';
 
 // Load environment variables
 dotenv.config();
@@ -70,6 +71,7 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/stores', storeRoutes);
 
 /**
  * @swagger

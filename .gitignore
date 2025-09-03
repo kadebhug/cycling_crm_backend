@@ -158,3 +158,5 @@ uploads/
 
 # PM2 logs
 logs/
+
+.kiro/

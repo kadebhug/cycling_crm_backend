@@ -348,6 +348,317 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        
+        // Store Owner schemas
+        StoreOwner: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              format: 'uuid',
+              example: '123e4567-e89b-12d3-a456-426614174000',
+              description: 'Store owner unique identifier',
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              example: 'owner@example.com',
+              description: 'Store owner email address',
+            },
+            firstName: {
+              type: 'string',
+              example: 'John',
+              description: 'Store owner first name',
+            },
+            lastName: {
+              type: 'string',
+              example: 'Doe',
+              description: 'Store owner last name',
+            },
+            phone: {
+              type: 'string',
+              example: '+1234567890',
+              description: 'Store owner phone number',
+            },
+            isActive: {
+              type: 'boolean',
+              example: true,
+              description: 'Whether the store owner account is active',
+            },
+            emailVerified: {
+              type: 'boolean',
+              example: true,
+              description: 'Whether the store owner email is verified',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-01-01T00:00:00.000Z',
+              description: 'Account creation timestamp',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-01-01T00:00:00.000Z',
+              description: 'Last update timestamp',
+            },
+          },
+        },
+        
+        CreateStoreOwnerRequest: {
+          type: 'object',
+          required: ['email', 'password', 'firstName', 'lastName'],
+          properties: {
+            email: {
+              type: 'string',
+              format: 'email',
+              example: 'owner@example.com',
+              description: 'Store owner email address',
+            },
+            password: {
+              type: 'string',
+              minLength: 8,
+              example: 'SecurePassword123!',
+              description: 'Store owner password (minimum 8 characters)',
+            },
+            firstName: {
+              type: 'string',
+              example: 'John',
+              description: 'Store owner first name',
+            },
+            lastName: {
+              type: 'string',
+              example: 'Doe',
+              description: 'Store owner last name',
+            },
+            phone: {
+              type: 'string',
+              example: '+1234567890',
+              description: 'Store owner phone number',
+            },
+          },
+        },
+        
+        UpdateStoreOwnerRequest: {
+          type: 'object',
+          properties: {
+            firstName: {
+              type: 'string',
+              example: 'John',
+              description: 'Store owner first name',
+            },
+            lastName: {
+              type: 'string',
+              example: 'Doe',
+              description: 'Store owner last name',
+            },
+            phone: {
+              type: 'string',
+              example: '+1234567890',
+              description: 'Store owner phone number',
+            },
+          },
+        },
+        
+        StoreOwnerStats: {
+          type: 'object',
+          properties: {
+            total: {
+              type: 'number',
+              example: 25,
+              description: 'Total number of store owners',
+            },
+            active: {
+              type: 'number',
+              example: 23,
+              description: 'Number of active store owners',
+            },
+            inactive: {
+              type: 'number',
+              example: 2,
+              description: 'Number of inactive store owners',
+            },
+            verified: {
+              type: 'number',
+              example: 20,
+              description: 'Number of email verified store owners',
+            },
+            unverified: {
+              type: 'number',
+              example: 5,
+              description: 'Number of unverified store owners',
+            },
+          },
+        },
+        
+        // Staff schemas
+        Staff: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'string',
+              format: 'uuid',
+              example: '123e4567-e89b-12d3-a456-426614174000',
+              description: 'Staff member unique identifier',
+            },
+            email: {
+              type: 'string',
+              format: 'email',
+              example: 'staff@example.com',
+              description: 'Staff member email address',
+            },
+            firstName: {
+              type: 'string',
+              example: 'Jane',
+              description: 'Staff member first name',
+            },
+            lastName: {
+              type: 'string',
+              example: 'Smith',
+              description: 'Staff member last name',
+            },
+            phone: {
+              type: 'string',
+              example: '+1234567890',
+              description: 'Staff member phone number',
+            },
+            isActive: {
+              type: 'boolean',
+              example: true,
+              description: 'Whether the staff member account is active',
+            },
+            permissions: {
+              type: 'array',
+              items: {
+                type: 'string',
+                enum: Object.values(Permission),
+              },
+              example: [Permission.VIEW_SERVICES, Permission.CREATE_SERVICES],
+              description: 'Staff member permissions',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-01-01T00:00:00.000Z',
+              description: 'Account creation timestamp',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-01-01T00:00:00.000Z',
+              description: 'Last update timestamp',
+            },
+          },
+        },
+        
+        CreateStaffRequest: {
+          type: 'object',
+          required: ['email', 'password', 'firstName', 'lastName'],
+          properties: {
+            email: {
+              type: 'string',
+              format: 'email',
+              example: 'staff@example.com',
+              description: 'Staff member email address',
+            },
+            password: {
+              type: 'string',
+              minLength: 8,
+              example: 'SecurePassword123!',
+              description: 'Staff member password (minimum 8 characters)',
+            },
+            firstName: {
+              type: 'string',
+              example: 'Jane',
+              description: 'Staff member first name',
+            },
+            lastName: {
+              type: 'string',
+              example: 'Smith',
+              description: 'Staff member last name',
+            },
+            phone: {
+              type: 'string',
+              example: '+1234567890',
+              description: 'Staff member phone number',
+            },
+            permissions: {
+              type: 'array',
+              items: {
+                type: 'string',
+                enum: Object.values(Permission),
+              },
+              example: [Permission.VIEW_SERVICES, Permission.CREATE_SERVICES],
+              description: 'Initial permissions for the staff member',
+            },
+          },
+        },
+        
+        UpdateStaffRequest: {
+          type: 'object',
+          properties: {
+            firstName: {
+              type: 'string',
+              example: 'Jane',
+              description: 'Staff member first name',
+            },
+            lastName: {
+              type: 'string',
+              example: 'Smith',
+              description: 'Staff member last name',
+            },
+            phone: {
+              type: 'string',
+              example: '+1234567890',
+              description: 'Staff member phone number',
+            },
+          },
+        },
+        
+        UpdateStaffPermissionsRequest: {
+          type: 'object',
+          required: ['permissions'],
+          properties: {
+            permissions: {
+              type: 'array',
+              items: {
+                type: 'string',
+                enum: Object.values(Permission),
+              },
+              example: [Permission.VIEW_SERVICES, Permission.CREATE_SERVICES, Permission.CREATE_QUOTATIONS],
+              description: 'Updated permissions for the staff member',
+            },
+          },
+        },
+        
+        AvailablePermissions: {
+          type: 'object',
+          properties: {
+            permissions: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  key: {
+                    type: 'string',
+                    example: 'VIEW_SERVICES',
+                    description: 'Permission key',
+                  },
+                  name: {
+                    type: 'string',
+                    example: 'View Services',
+                    description: 'Human-readable permission name',
+                  },
+                  description: {
+                    type: 'string',
+                    example: 'Allows viewing service requests and records',
+                    description: 'Permission description',
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     },
     tags: [
@@ -363,10 +674,19 @@ const options: swaggerJsdoc.Options = {
         name: 'Users',
         description: 'User management operations',
       },
+      {
+        name: 'Admin',
+        description: 'Administrative operations for managing store owners',
+      },
+      {
+        name: 'Stores',
+        description: 'Store management and staff operations',
+      },
     ],
   },
   apis: [
     './src/routes/*.ts',
+    './src/api/routes/*.ts',
     './src/controllers/*.ts',
     './src/app.ts',
   ],
