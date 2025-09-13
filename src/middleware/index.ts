@@ -3,6 +3,9 @@ export { AuthMiddleware, AuthenticatedRequest } from './auth.middleware';
 export { PermissionMiddleware } from './permission.middleware';
 export { ValidationMiddleware, ValidationSchema } from './validation.middleware';
 
+// File upload middleware
+export * from './upload.middleware';
+
 // Re-export commonly used types
 export type {
   LoginCredentials,

@@ -10,7 +10,12 @@ import { API_CONFIG } from './constants';
 import { swaggerSpec } from './config/swagger.config';
 import { authRoutes } from './routes/auth.routes';
 import { adminRoutes } from './routes/admin.routes';
+import { customerRoutes } from './routes/customer.routes';
+import { serviceRoutes } from './routes/service.routes';
+import { quotationRoutes } from './routes/quotation.routes';
+import { staffRoutes } from './routes/staff.routes';
 import storeRoutes from './api/routes/store.routes';
+import mediaRoutes from './routes/media.routes';
 
 // Load environment variables
 dotenv.config();
@@ -71,7 +76,12 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/customers', customerRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/api/quotations', quotationRoutes);
+app.use('/api/staff', staffRoutes);
 app.use('/api/stores', storeRoutes);
+app.use('/api/media', mediaRoutes);
 
 /**
  * @swagger

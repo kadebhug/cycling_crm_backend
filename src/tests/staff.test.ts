@@ -241,7 +241,9 @@ describe('StaffService', () => {
     });
 
     it('should throw error if staff not found', async () => {
-      jest.spyOn(staffService, 'getStaffById').mockResolvedValueOnce(null);
+      const getStaffByIdSpy = jest.spyOn(staffService, 'getStaffById');
+      getStaffByIdSpy.mockRestore();
+      getStaffByIdSpy.mockResolvedValue(null);
 
       await expect(staffService.updateStaff('store-123', 'staff-123', updateData))
         .rejects.toThrow('Staff member not found or does not belong to this store');
@@ -281,7 +283,9 @@ describe('StaffService', () => {
     });
 
     it('should throw error if staff not found', async () => {
-      jest.spyOn(staffService, 'getStaffById').mockResolvedValueOnce(null);
+      const getStaffByIdSpy = jest.spyOn(staffService, 'getStaffById');
+      getStaffByIdSpy.mockRestore();
+      getStaffByIdSpy.mockResolvedValue(null);
 
       await expect(staffService.updateStaffPermissions('store-123', 'staff-123', permissionsData))
         .rejects.toThrow('Staff member not found or does not belong to this store');
@@ -331,7 +335,9 @@ describe('StaffService', () => {
     });
 
     it('should throw error if staff not found', async () => {
-      jest.spyOn(staffService, 'getStaffById').mockResolvedValueOnce(null);
+      const getStaffByIdSpy = jest.spyOn(staffService, 'getStaffById');
+      getStaffByIdSpy.mockRestore();
+      getStaffByIdSpy.mockResolvedValue(null);
 
       await expect(staffService.removeStaffFromStore('store-123', 'staff-123'))
         .rejects.toThrow('Staff member not found or does not belong to this store');
@@ -402,7 +408,14 @@ describe('StaffService', () => {
     });
 
     it('should throw error if staff already assigned to store', async () => {
-      (StaffStorePermission.findOne as jest.Mock).mockResolvedValue(mockStaffPermission);
+      // Clear all mocks and set up fresh ones for this test
+      jest.clearAllMocks();
+      mockStoreRepository.findById.mockResolvedValue(mockStore);
+      mockUserRepository.findById.mockResolvedValue(mockStaffUser);
+      
+      // Create a fresh mock with isActive: true to trigger the error
+      const activePermission = { ...mockStaffPermission, isActive: true };
+      (StaffStorePermission.findOne as jest.Mock).mockResolvedValue(activePermission);
 
       await expect(staffService.addStaffToStore('store-123', 'staff-123', permissions))
         .rejects.toThrow('Staff member is already assigned to this store');

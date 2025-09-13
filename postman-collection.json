@@ -45,6 +45,21 @@
       "key": "store_owner_id",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "customer_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "bike_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "service_request_id",
+      "value": "",
+      "type": "string"
     }
   ],
   "item": [
@@ -527,6 +542,453 @@
               "raw": "{{base_url}}/stores/permissions",
               "host": ["{{base_url}}"],
               "path": ["stores", "permissions"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer - Bikes",
+      "item": [
+        {
+          "name": "Register Bike",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"Trek\",\n  \"model\": \"Domane SL 7\",\n  \"year\": 2023,\n  \"serialNumber\": \"WTU123456789\",\n  \"color\": \"Matte Black\",\n  \"bikeType\": \"Road Bike\",\n  \"notes\": \"Carbon frame with Ultegra groupset\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/bikes",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "bikes"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('bike_id', response.data.bike.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Customer Bikes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers/bikes?page=1&limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "bikes"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Bike by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers/bikes/{{bike_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "bikes", "{{bike_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Bike",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"brand\": \"Trek\",\n  \"model\": \"Domane SL 7 Updated\",\n  \"year\": 2023,\n  \"color\": \"Gloss Black\",\n  \"notes\": \"Updated notes - carbon frame with Ultegra groupset\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/bikes/{{bike_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "bikes", "{{bike_id}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer - Service Requests",
+      "item": [
+        {
+          "name": "Create Service Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bikeId\": \"{{bike_id}}\",\n  \"storeId\": \"{{store_id}}\",\n  \"requestedServices\": [\"Brake adjustment\", \"Chain lubrication\", \"Tire pressure check\"],\n  \"priority\": \"medium\",\n  \"preferredDate\": \"2024-12-25T10:00:00Z\",\n  \"customerNotes\": \"Brakes are squeaking when I apply them. Also need general maintenance.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/service-requests",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "service-requests"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('service_request_id', response.data.serviceRequest.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Service Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers/service-requests?page=1&limit=10&sortBy=createdAt&sortOrder=DESC",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "service-requests"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "DESC"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Service Requests - Filtered by Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers/service-requests?status=pending&priority=high",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "service-requests"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending"
+                },
+                {
+                  "key": "priority",
+                  "value": "high"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Service Request by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers/service-requests/{{service_request_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "service-requests", "{{service_request_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Service Request",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestedServices\": [\"Brake adjustment\", \"Chain lubrication\", \"Gear tuning\"],\n  \"priority\": \"high\",\n  \"customerNotes\": \"Updated notes - brakes are squeaking and gears are not shifting smoothly\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/service-requests/{{service_request_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "service-requests", "{{service_request_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Service Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers/service-requests/{{service_request_id}}/cancel",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "service-requests", "{{service_request_id}}", "cancel"]
+            }
+          }
+        },
+        {
+          "name": "Get Service Request Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/customers/service-requests/stats",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "service-requests", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Store - Service Request Management",
+      "item": [
+        {
+          "name": "Get Store Service Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests?page=1&limit=10&sortBy=createdAt&sortOrder=DESC",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "DESC"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Service Requests - Filtered",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests?status=pending&priority=urgent&customerId={{customer_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending"
+                },
+                {
+                  "key": "priority",
+                  "value": "urgent"
+                },
+                {
+                  "key": "customerId",
+                  "value": "{{customer_id}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Service Request by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests/{{service_request_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests", "{{service_request_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Service Request Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"quoted\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests/{{service_request_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests", "{{service_request_id}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Update Status - Approve Request",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests/{{service_request_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests", "{{service_request_id}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Update Status - Start Work",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_progress\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests/{{service_request_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests", "{{service_request_id}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Update Status - Complete Work",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"completed\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests/{{service_request_id}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests", "{{service_request_id}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Service Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests/{{service_request_id}}/cancel",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests", "{{service_request_id}}", "cancel"]
+            }
+          }
+        },
+        {
+          "name": "Get Service Request Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests/stats",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Get Overdue Service Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests/overdue",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests", "overdue"]
+            }
+          }
+        },
+        {
+          "name": "Get High Priority Service Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/stores/{{store_id}}/service-requests/high-priority",
+              "host": ["{{base_url}}"],
+              "path": ["stores", "{{store_id}}", "service-requests", "high-priority"]
             }
           }
         }

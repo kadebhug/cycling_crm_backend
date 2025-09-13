@@ -318,6 +318,58 @@ export class PermissionMiddleware {
   }
 
   /**
+   * Middleware to require specific user role
+   */
+  static requireRole = (role: UserRole | UserRole[]) => {
+    const roles = Array.isArray(role) ? role : [role];
+    
+    return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+      try {
+        const user = (req as AuthenticatedRequest).user;
+
+        if (!user) {
+          res.status(401).json({
+            success: false,
+            error: {
+              code: 'AUTHENTICATION_REQUIRED',
+              message: 'Authentication is required',
+              timestamp: new Date().toISOString(),
+              path: req.path,
+            },
+          });
+          return;
+        }
+
+        if (!roles.includes(user.role as UserRole)) {
+          res.status(403).json({
+            success: false,
+            error: {
+              code: 'INSUFFICIENT_ROLE',
+              message: `Required role(s): ${roles.join(', ')}. Current role: ${user.role}`,
+              timestamp: new Date().toISOString(),
+              path: req.path,
+            },
+          });
+          return;
+        }
+
+        next();
+      } catch (error) {
+        console.error('Role check error:', error);
+        res.status(500).json({
+          success: false,
+          error: {
+            code: 'ROLE_CHECK_FAILED',
+            message: 'Failed to verify user role',
+            timestamp: new Date().toISOString(),
+            path: req.path,
+          },
+        });
+      }
+    };
+  };
+
+  /**
    * Get user permissions for a specific store
    */
   static async getUserStorePermissions(
@@ -353,3 +405,9 @@ export class PermissionMiddleware {
     }
   }
 }
+
+// Export individual functions for convenience
+export const requirePermission = PermissionMiddleware.requirePermission;
+export const requireStoreAccess = PermissionMiddleware.requireStoreAccess;
+export const requireResourceOwnership = PermissionMiddleware.requireResourceOwnership;
+export const requireRole = PermissionMiddleware.requireRole;

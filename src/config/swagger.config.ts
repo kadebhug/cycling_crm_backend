@@ -1,5 +1,6 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import { UserRole, Permission } from '../types/database/database.types';
+import { additionalSchemas } from '../docs/swagger-schemas';
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -659,6 +660,183 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        
+        // Pagination schema
+        Pagination: {
+          type: 'object',
+          properties: {
+            page: {
+              type: 'number',
+              example: 1,
+              description: 'Current page number',
+            },
+            limit: {
+              type: 'number',
+              example: 20,
+              description: 'Items per page',
+            },
+            total: {
+              type: 'number',
+              example: 100,
+              description: 'Total number of items',
+            },
+            totalPages: {
+              type: 'number',
+              example: 5,
+              description: 'Total number of pages',
+            },
+            hasNext: {
+              type: 'boolean',
+              example: true,
+              description: 'Whether there is a next page',
+            },
+            hasPrev: {
+              type: 'boolean',
+              example: false,
+              description: 'Whether there is a previous page',
+            },
+          },
+        },
+        
+        // Additional schemas from swagger-schemas.ts
+        ...additionalSchemas,
+      },
+      responses: {
+        Unauthorized: {
+          description: 'Authentication required',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+              example: {
+                success: false,
+                error: {
+                  code: 'MISSING_TOKEN',
+                  message: 'Authentication token is required',
+                  timestamp: '2024-01-01T00:00:00.000Z',
+                  path: '/api/media/upload',
+                },
+              },
+            },
+          },
+        },
+        Forbidden: {
+          description: 'Access denied - insufficient permissions',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+              example: {
+                success: false,
+                error: {
+                  code: 'INSUFFICIENT_PERMISSIONS',
+                  message: 'You do not have permission to perform this action',
+                  timestamp: '2024-01-01T00:00:00.000Z',
+                  path: '/api/media/upload',
+                },
+              },
+            },
+          },
+        },
+        BadRequest: {
+          description: 'Bad request - invalid input data',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+              example: {
+                success: false,
+                error: {
+                  code: 'VALIDATION_ERROR',
+                  message: 'Invalid input data',
+                  details: ['entityType is required', 'entityId must be a valid UUID'],
+                  timestamp: '2024-01-01T00:00:00.000Z',
+                  path: '/api/media/upload',
+                },
+              },
+            },
+          },
+        },
+        InternalServerError: {
+          description: 'Internal server error',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+              example: {
+                success: false,
+                error: {
+                  code: 'INTERNAL_ERROR',
+                  message: 'An unexpected error occurred',
+                  timestamp: '2024-01-01T00:00:00.000Z',
+                  path: '/api/media/upload',
+                },
+              },
+            },
+          },
+        },
+        ValidationError: {
+          description: 'Validation error - invalid input data',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+              example: {
+                success: false,
+                error: {
+                  code: 'VALIDATION_ERROR',
+                  message: 'Invalid input data',
+                  details: ['Field is required', 'Invalid format'],
+                  timestamp: '2024-01-01T00:00:00.000Z',
+                  path: '/api/customers/bikes',
+                },
+              },
+            },
+          },
+        },
+        Conflict: {
+          description: 'Conflict - resource already exists or invalid state',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+              example: {
+                success: false,
+                error: {
+                  code: 'CONFLICT',
+                  message: 'Resource already exists or invalid state transition',
+                  timestamp: '2024-01-01T00:00:00.000Z',
+                  path: '/api/customers/bikes',
+                },
+              },
+            },
+          },
+        },
+        NotFound: {
+          description: 'Resource not found',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ErrorResponse',
+              },
+              example: {
+                success: false,
+                error: {
+                  code: 'NOT_FOUND',
+                  message: 'Resource not found',
+                  timestamp: '2024-01-01T00:00:00.000Z',
+                  path: '/api/customers/bikes/123',
+                },
+              },
+            },
+          },
+        },
       },
     },
     tags: [
@@ -681,6 +859,42 @@ const options: swaggerJsdoc.Options = {
       {
         name: 'Stores',
         description: 'Store management and staff operations',
+      },
+      {
+        name: 'Customers',
+        description: 'Customer operations and bike management',
+      },
+      {
+        name: 'Customer Bikes',
+        description: 'Customer bike registration and management',
+      },
+      {
+        name: 'Customer Service Requests',
+        description: 'Customer service request creation and management',
+      },
+      {
+        name: 'Store Service Requests',
+        description: 'Store-side service request management and workflow',
+      },
+      {
+        name: 'Media',
+        description: 'File upload and media management operations',
+      },
+      {
+        name: 'Services',
+        description: 'Service management operations for stores',
+      },
+      {
+        name: 'Quotations',
+        description: 'Quotation management for stores',
+      },
+      {
+        name: 'Customer Quotations',
+        description: 'Customer-facing quotation operations',
+      },
+      {
+        name: 'Staff Service Records',
+        description: 'Staff service record management operations',
       },
     ],
   },

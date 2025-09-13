@@ -496,4 +496,388 @@ export const additionalSchemas = {
       },
     },
   },
+
+  // Media schemas
+  Media: {
+    type: 'object',
+    properties: {
+      id: {
+        type: 'string',
+        format: 'uuid',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'Media file unique identifier',
+      },
+      entityType: {
+        type: 'string',
+        enum: ['service_record', 'service_update', 'quotation', 'invoice', 'bike', 'user', 'store'],
+        example: 'service_record',
+        description: 'Type of entity the media is associated with',
+      },
+      entityId: {
+        type: 'string',
+        format: 'uuid',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'ID of the entity the media is associated with',
+      },
+      fileName: {
+        type: 'string',
+        example: '1704067200000_abc123_bike_photo.jpg',
+        description: 'Generated file name on server',
+      },
+      originalName: {
+        type: 'string',
+        example: 'bike_photo.jpg',
+        description: 'Original file name uploaded by user',
+      },
+      mimeType: {
+        type: 'string',
+        example: 'image/jpeg',
+        description: 'MIME type of the file',
+      },
+      fileSize: {
+        type: 'number',
+        example: 2048576,
+        description: 'File size in bytes',
+      },
+      mediaType: {
+        type: 'string',
+        enum: ['image', 'document', 'video'],
+        example: 'image',
+        description: 'Category of media file',
+      },
+      downloadUrl: {
+        type: 'string',
+        example: '/api/media/123e4567-e89b-12d3-a456-426614174000/download',
+        description: 'URL to download the file',
+      },
+      thumbnailUrl: {
+        type: 'string',
+        nullable: true,
+        example: '/api/media/123e4567-e89b-12d3-a456-426614174000/thumbnail',
+        description: 'URL to view thumbnail (for images only)',
+      },
+      uploadedBy: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            format: 'uuid',
+            example: '123e4567-e89b-12d3-a456-426614174000',
+          },
+          firstName: {
+            type: 'string',
+            nullable: true,
+            example: 'John',
+          },
+          lastName: {
+            type: 'string',
+            nullable: true,
+            example: 'Doe',
+          },
+          email: {
+            type: 'string',
+            format: 'email',
+            example: 'john@example.com',
+          },
+        },
+        description: 'User who uploaded the file',
+      },
+      createdAt: {
+        type: 'string',
+        format: 'date-time',
+        example: '2024-01-01T00:00:00.000Z',
+        description: 'Upload timestamp',
+      },
+      updatedAt: {
+        type: 'string',
+        format: 'date-time',
+        example: '2024-01-01T00:00:00.000Z',
+        description: 'Last update timestamp',
+      },
+    },
+  },
+
+  MediaUploadRequest: {
+    type: 'object',
+    required: ['entityType', 'entityId', 'file'],
+    properties: {
+      entityType: {
+        type: 'string',
+        enum: ['service_record', 'service_update', 'quotation', 'invoice', 'bike', 'user', 'store'],
+        example: 'service_record',
+        description: 'Type of entity to associate the media with',
+      },
+      entityId: {
+        type: 'string',
+        format: 'uuid',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'ID of the entity to associate the media with',
+      },
+      file: {
+        type: 'string',
+        format: 'binary',
+        description: 'File to upload (max 10MB)',
+      },
+    },
+  },
+
+  MediaMultipleUploadRequest: {
+    type: 'object',
+    required: ['entityType', 'entityId', 'files'],
+    properties: {
+      entityType: {
+        type: 'string',
+        enum: ['service_record', 'service_update', 'quotation', 'invoice', 'bike', 'user', 'store'],
+        example: 'service_record',
+        description: 'Type of entity to associate the media with',
+      },
+      entityId: {
+        type: 'string',
+        format: 'uuid',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'ID of the entity to associate the media with',
+      },
+      files: {
+        type: 'array',
+        items: {
+          type: 'string',
+          format: 'binary',
+        },
+        maxItems: 10,
+        description: 'Files to upload (max 10 files, 10MB each)',
+      },
+    },
+  },
+
+  MediaUpdateMetadataRequest: {
+    type: 'object',
+    properties: {
+      originalName: {
+        type: 'string',
+        example: 'updated_filename.jpg',
+        description: 'Updated original file name',
+      },
+    },
+  },
+
+  MediaStats: {
+    type: 'object',
+    properties: {
+      totalFiles: {
+        type: 'number',
+        example: 15,
+        description: 'Total number of files',
+      },
+      totalSize: {
+        type: 'number',
+        example: 25165824,
+        description: 'Total size of all files in bytes',
+      },
+      imageCount: {
+        type: 'number',
+        example: 10,
+        description: 'Number of image files',
+      },
+      documentCount: {
+        type: 'number',
+        example: 3,
+        description: 'Number of document files',
+      },
+      videoCount: {
+        type: 'number',
+        example: 2,
+        description: 'Number of video files',
+      },
+    },
+  },
+
+  MediaSearchFilters: {
+    type: 'object',
+    properties: {
+      entityType: {
+        type: 'string',
+        enum: ['service_record', 'service_update', 'quotation', 'invoice', 'bike', 'user', 'store'],
+        description: 'Filter by entity type',
+      },
+      entityId: {
+        type: 'string',
+        format: 'uuid',
+        description: 'Filter by entity ID',
+      },
+      mediaType: {
+        type: 'string',
+        enum: ['image', 'document', 'video'],
+        description: 'Filter by media type',
+      },
+      uploadedById: {
+        type: 'string',
+        format: 'uuid',
+        description: 'Filter by uploader user ID',
+      },
+      mimeType: {
+        type: 'string',
+        description: 'Filter by MIME type',
+      },
+      createdAfter: {
+        type: 'string',
+        format: 'date-time',
+        description: 'Filter files created after this date',
+      },
+      createdBefore: {
+        type: 'string',
+        format: 'date-time',
+        description: 'Filter files created before this date',
+      },
+    },
+  },
+
+  MediaCleanupResult: {
+    type: 'object',
+    properties: {
+      deletedFiles: {
+        type: 'number',
+        example: 5,
+        description: 'Number of orphaned files deleted',
+      },
+      errors: {
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+        example: ['Failed to delete file xyz.jpg: Permission denied'],
+        description: 'List of errors encountered during cleanup',
+      },
+    },
+  },
+
+  // Service Record schemas
+  ServiceRecord: {
+    type: 'object',
+    properties: {
+      id: {
+        type: 'string',
+        format: 'uuid',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'Service record unique identifier',
+      },
+      serviceRequestId: {
+        type: 'string',
+        format: 'uuid',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'Associated service request ID',
+      },
+      assignedStaffId: {
+        type: 'string',
+        format: 'uuid',
+        nullable: true,
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'Assigned staff member ID',
+      },
+      status: {
+        type: 'string',
+        enum: ['pending', 'in_progress', 'on_hold', 'completed'],
+        example: 'in_progress',
+        description: 'Current status of the service work',
+      },
+      startedAt: {
+        type: 'string',
+        format: 'date-time',
+        nullable: true,
+        example: '2024-01-10T09:00:00.000Z',
+        description: 'When work was started',
+      },
+      completedAt: {
+        type: 'string',
+        format: 'date-time',
+        nullable: true,
+        example: '2024-01-10T15:30:00.000Z',
+        description: 'When work was completed',
+      },
+      estimatedCompletionDate: {
+        type: 'string',
+        format: 'date-time',
+        nullable: true,
+        example: '2024-01-15T16:00:00.000Z',
+        description: 'Estimated completion date',
+      },
+      actualHours: {
+        type: 'number',
+        nullable: true,
+        example: 2.5,
+        description: 'Actual hours spent on the work',
+      },
+      notes: {
+        type: 'string',
+        nullable: true,
+        example: 'Replaced brake pads and adjusted cables',
+        description: 'Work notes and comments',
+      },
+      createdAt: {
+        type: 'string',
+        format: 'date-time',
+        example: '2024-01-01T00:00:00.000Z',
+      },
+      updatedAt: {
+        type: 'string',
+        format: 'date-time',
+        example: '2024-01-01T00:00:00.000Z',
+      },
+    },
+  },
+
+  // Service Update schemas
+  ServiceUpdate: {
+    type: 'object',
+    properties: {
+      id: {
+        type: 'string',
+        format: 'uuid',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'Service update unique identifier',
+      },
+      serviceRecordId: {
+        type: 'string',
+        format: 'uuid',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'Associated service record ID',
+      },
+      createdById: {
+        type: 'string',
+        format: 'uuid',
+        example: '123e4567-e89b-12d3-a456-426614174000',
+        description: 'Staff member who created the update',
+      },
+      updateType: {
+        type: 'string',
+        enum: ['progress', 'issue', 'completion', 'hold'],
+        example: 'progress',
+        description: 'Type of update',
+      },
+      title: {
+        type: 'string',
+        example: 'Brake adjustment completed',
+        description: 'Update title',
+      },
+      description: {
+        type: 'string',
+        example: 'Successfully adjusted front and rear brakes. Test ride completed.',
+        description: 'Detailed update description',
+      },
+      isCustomerVisible: {
+        type: 'boolean',
+        example: true,
+        description: 'Whether this update is visible to the customer',
+      },
+      createdAt: {
+        type: 'string',
+        format: 'date-time',
+        example: '2024-01-01T00:00:00.000Z',
+      },
+      updatedAt: {
+        type: 'string',
+        format: 'date-time',
+        example: '2024-01-01T00:00:00.000Z',
+      },
+    },
+  },
 };

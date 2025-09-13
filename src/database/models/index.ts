@@ -348,5 +348,5 @@ export {
   Media,
 };
 
-// Initialize models with the sequelize instance
-initializeModels(sequelize);
+// Models will be initialized by the DatabaseConnection class
+// Don't initialize here to avoid circular dependencies

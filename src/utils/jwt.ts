@@ -224,3 +224,8 @@ export class JWTUtils {
     }
   }
 }
+
+// Export convenience function for tests
+export const generateToken = (payload: Omit<TokenPayload, 'iat' | 'exp'>): string => {
+  return JWTUtils.generateAccessToken(payload);
+};

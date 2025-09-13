@@ -203,3 +203,15 @@ export class AuthMiddleware {
     next();
   };
 }
+
+// Export individual functions for convenience
+export const authenticateToken = AuthMiddleware.authenticate;
+export const requireRole = AuthMiddleware.requireRole;
+export const requireAdmin = AuthMiddleware.requireAdmin;
+export const requireStoreOwner = AuthMiddleware.requireStoreOwner;
+export const requireStaff = AuthMiddleware.requireStaff;
+export const requireCustomer = AuthMiddleware.requireCustomer;
+export const requireAnyRole = AuthMiddleware.requireAnyRole;
+export const optionalAuth = AuthMiddleware.optionalAuth;
+export const requireActiveUser = AuthMiddleware.requireActiveUser;
+export const requireVerifiedEmail = AuthMiddleware.requireVerifiedEmail;

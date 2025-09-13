@@ -331,6 +331,14 @@ export class UserRepository extends BaseRepository<User> {
   }
 
   /**
+   * Check if user has a specific permission for a store
+   */
+  async hasStorePermission(userId: string, storeId: string, permission: Permission, options: BaseRepositoryOptions = {}): Promise<boolean> {
+    const permissions = await this.getUserStorePermissions(userId, storeId, options);
+    return permissions.includes(permission);
+  }
+
+  /**
    * Find users with filters
    */
   async findWithFilters(filters: UserFilterOptions, options: BaseRepositoryOptions = {}): Promise<User[]> {
